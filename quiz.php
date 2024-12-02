@@ -69,3 +69,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['start_quiz'])) {
     header("Location: quiz.php");
     exit;
 }
+
+// Validate session
+if (!isset($_SESSION['questions']) || !isset($_SESSION['current_question'])) {
+    header("Location: index2.php");
+    exit;
+}
+
+$current_question_index = $_SESSION['current_question'];
+$questions = $_SESSION['questions'];
+
+// End quiz
+if ($current_question_index >= count($questions)) {
+    $score = $_SESSION['score'];
+    session_destroy();
+    echo "<h1>Quiz Completed!</h1>";
+    echo "<p>Your Score: $score / " . count($questions) . "</p>";
+    echo '<a href="index2.php">Restart Quiz</a>';
+    exit;
+}
