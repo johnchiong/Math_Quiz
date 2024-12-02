@@ -88,3 +88,32 @@ if ($current_question_index >= count($questions)) {
     echo '<a href="index2.php">Restart Quiz</a>';
     exit;
 }
+
+// Handle user actions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['answer']) && !$_SESSION['answered']) {
+        $user_answer = intval($_POST['answer']);
+        $current_question = $questions[$current_question_index];
+
+        if ($user_answer === $current_question['correct_answer']) {
+            $_SESSION['score']++;
+            $_SESSION['remarks'] = "Correct!";
+        } else {
+            $_SESSION['remarks'] = "Wrong! The correct answer was " . $current_question['correct_answer'];
+        }
+
+        $_SESSION['answered'] = true;
+    } elseif (isset($_POST['next'])) {
+        if ($_SESSION['answered']) {
+            $_SESSION['current_question']++;
+            $_SESSION['answered'] = false;
+            $_SESSION['remarks'] = null;
+        }
+        header("Location: quiz.php");
+        exit;
+    } elseif (isset($_POST['end'])) {
+        header("Location: index2.php");
+        session_destroy();
+        exit;
+    }
+}
