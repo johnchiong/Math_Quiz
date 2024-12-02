@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['start_quiz'])) {
 
 // Validate session
 if (!isset($_SESSION['questions']) || !isset($_SESSION['current_question'])) {
-    header("Location: index2.php");
+    header("Location: index.php");
     exit;
 }
 
@@ -85,7 +85,7 @@ if ($current_question_index >= count($questions)) {
     session_destroy();
     echo "<h1>Quiz Completed!</h1>";
     echo "<p>Your Score: $score / " . count($questions) . "</p>";
-    echo '<a href="index2.php">Restart Quiz</a>';
+    echo '<a href="index.php">Restart Quiz</a>';
     exit;
 }
 
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: quiz.php");
         exit;
     } elseif (isset($_POST['end'])) {
-        header("Location: index2.php");
+        header("Location: index.php");
         session_destroy();
         exit;
     }
