@@ -117,3 +117,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
+
+$current_question = $questions[$current_question_index];
+$remarks = $_SESSION['remarks'] ?? null;
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Question <?php echo $current_question_index + 1; ?> / <?php echo count($questions); ?></h1>
+        <p><?php echo $current_question['num1'] . " " . $current_question['operator'] . " " . $current_question['num2']; ?> = ?</p>
+
+        <form method="POST">
+            <?php if (!$_SESSION['answered']): ?>
+                <?php foreach ($current_question['choices'] as $choice): ?>
+                    <button type="submit" name="answer" value="<?php echo $choice; ?>"><?php echo $choice; ?></button>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p><?php echo $remarks; ?></p>
+                <button type="submit" name="next">Next</button>
+                <button type="submit" name="end">End Quiz</button>
+            <?php endif; ?>
+        </form>
+
+        <p>Score: <?php echo $_SESSION['score']; ?> / <?php echo count($questions); ?></p>
+    </div>
+</body>
+</html>
